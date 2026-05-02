@@ -1,15 +1,19 @@
 import requests
 import json
 import sys
+import os
 sys.stdout.reconfigure(encoding='utf-8')
-# URL do endpoint para login
+
 url_login = "http://desafiopython.jogajuntoinstituto.org/api/users/login/"
 
-# Dados para login
 dados_login = {
-    "email": "@teste.com",
-    "password": "123456789"
+    "email": os.environ.get("LOGIN_EMAIL", "usuario@teste.com"),
+    "password": os.environ.get("LOGIN_PASSWORD", "")
 }
+
+if not dados_login["password"]:
+    print("Erro: defina a variável de ambiente LOGIN_PASSWORD antes de executar.")
+    sys.exit(1)
 
 # Enviar requisição POST
 resposta = requests.post(url_login, json=dados_login)
